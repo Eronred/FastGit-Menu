@@ -20,14 +20,15 @@ build-ci:
 		-scheme "$(SCHEME)" \
 		-configuration Release \
 		-derivedDataPath "$(BUILD_DIR)/derived" \
-		CODE_SIGN_IDENTITY="-" \
-		CODE_SIGNING_REQUIRED=NO \
-		CODE_SIGNING_ALLOWED=NO \
-		DEVELOPMENT_TEAM="" \
+		CODE_SIGN_STYLE=Manual \
+		CODE_SIGN_IDENTITY="Developer ID Application" \
+		CODE_SIGNING_REQUIRED=YES \
+		CODE_SIGNING_ALLOWED=YES \
+		DEVELOPMENT_TEAM=ZF9P9LGM63 \
+		PROVISIONING_PROFILE_SPECIFIER="" \
 		build
 	@mkdir -p "$(BUILD_DIR)"
 	@cp -R "$(BUILD_DIR)/derived/Build/Products/Release/$(APP_NAME).app" "$(BUILD_DIR)/$(APP_NAME).app"
-	@codesign --force --deep --sign - "$(BUILD_DIR)/$(APP_NAME).app"
 	@echo "Built: $(BUILD_DIR)/$(APP_NAME).app"
 
 dmg:
