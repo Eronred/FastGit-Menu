@@ -1,11 +1,13 @@
 
-<img width="4148" height="1948" alt="image" src="https://github.com/user-attachments/assets/057e42ed-3f37-4a25-ae8b-cc7d1497ad99" />
+<img width="4148" height="1948" alt="image" src="https://github.com/user-attachments/assets/d6c8f46c-c9ba-4d08-9f8a-6ab9c06513a6" />
 
 # FastGit
 
 **GitHub review requests, always visible in your menu bar.**
 
 FastGit is a lightweight macOS menu bar app that shows pull requests waiting for your review. No more missing review requests buried in GitHub's notification noise.
+
+<img width="2412" height="1360" alt="image" src="https://github.com/user-attachments/assets/ce94d4cf-c8a8-454a-81d8-5d90fc715bea" />
 
 ---
 
