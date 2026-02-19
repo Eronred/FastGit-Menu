@@ -11,17 +11,18 @@ final class AppViewModel: ObservableObject {
     @Published var username: String?
 
     private let gitHubService = GitHubService()
-    private var pollingTimer: Timer?
+    private var pollingTask: Task<Void, Never>?
     private var knownPRIds: Set<Int> = []
-    private let pollingInterval: TimeInterval = 60
+    private var hasCompletedInitialFetch = false
+    private let pollingInterval: UInt64 = 30_000_000_000
 
     var hasToken: Bool { !token.isEmpty }
     var prCount: Int { pullRequests.count }
 
     func start() {
+        guard pollingTask == nil else { return }
         NotificationManager.shared.requestPermission()
         guard hasToken else { return }
-        Task { await fetchPullRequests() }
         startPolling()
     }
 
@@ -31,13 +32,13 @@ final class AppViewModel: ObservableObject {
         knownPRIds = []
         pullRequests = []
         errorMessage = nil
+        hasCompletedInitialFetch = false
 
         guard hasToken else {
             stopPolling()
             return
         }
 
-        Task { await fetchPullRequests() }
         startPolling()
     }
 
@@ -47,6 +48,7 @@ final class AppViewModel: ObservableObject {
         pullRequests = []
         knownPRIds = []
         errorMessage = nil
+        hasCompletedInitialFetch = false
         stopPolling()
     }
 
@@ -66,7 +68,7 @@ final class AppViewModel: ObservableObject {
             let prs = try await gitHubService.fetchReviewRequests(token: token, username: username)
 
             let newPRs = prs.filter { !knownPRIds.contains($0.id) }
-            if !knownPRIds.isEmpty {
+            if hasCompletedInitialFetch {
                 for pr in newPRs {
                     NotificationManager.shared.sendNewPRNotification(pr)
                 }
@@ -74,6 +76,7 @@ final class AppViewModel: ObservableObject {
 
             knownPRIds = Set(prs.map(\.id))
             pullRequests = prs
+            hasCompletedInitialFetch = true
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -93,15 +96,18 @@ final class AppViewModel: ObservableObject {
 
     private func startPolling() {
         stopPolling()
-        pollingTimer = Timer.scheduledTimer(withTimeInterval: pollingInterval, repeats: true) { [weak self] _ in
-            Task { @MainActor [weak self] in
-                await self?.fetchPullRequests()
+        pollingTask = Task {
+            await fetchPullRequests()
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: pollingInterval)
+                guard !Task.isCancelled else { break }
+                await fetchPullRequests()
             }
         }
     }
 
     private func stopPolling() {
-        pollingTimer?.invalidate()
-        pollingTimer = nil
+        pollingTask?.cancel()
+        pollingTask = nil
     }
 }

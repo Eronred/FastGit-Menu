@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct FastGit_MenuApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var viewModel = AppViewModel()
 
     var body: some Scene {
@@ -17,14 +18,15 @@ struct FastGit_MenuApp: App {
                         .baselineOffset(-0.5)
                 }
             }
+            .onAppear { viewModel.start() }
         }
         .menuBarExtraStyle(.window)
         .defaultSize(width: 360, height: 480)
     }
+}
 
-    init() {
-        DispatchQueue.main.async {
-            NSApplication.shared.setActivationPolicy(.accessory)
-        }
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApplication.shared.setActivationPolicy(.accessory)
     }
 }

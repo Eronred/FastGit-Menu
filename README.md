@@ -1,3 +1,6 @@
+
+<img width="4148" height="1948" alt="image" src="https://github.com/user-attachments/assets/057e42ed-3f37-4a25-ae8b-cc7d1497ad99" />
+
 # FastGit
 
 **GitHub review requests, always visible in your menu bar.**
@@ -25,33 +28,18 @@ GitHub's notification system mixes review requests with hundreds of other events
 
 Download the latest `.dmg` from [GitHub Releases](https://github.com/Eronred/FastGit-Menu/releases/latest), open it, and drag **FastGit Menu** to your Applications folder. The app is signed and notarized -- it will open without any warnings.
 
-### Build from source
-
-Requires Xcode 16+ and macOS 14+.
-
-```bash
-git clone https://github.com/Eronred/FastGit-Menu.git
-cd FastGit-Menu
-make build
-```
-
-The built app will be at `build/FastGit Menu.app`. To create a DMG:
-
-```bash
-make dmg
-```
-
 ## Setup
 
 1. Launch **FastGit Menu** -- a pull request icon appears in your menu bar
-2. Click the icon and enter your GitHub Personal Access Token
+2. Click the icon and enter your GitHub Personal Access Token. It is saved in your local. There is no DB setup.
 3. That's it -- your pending reviews will appear
+4. Do not forget to allow notifications
 
 ### Creating a GitHub token
 
 1. Go to [GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)](https://github.com/settings/tokens)
 2. Click **Generate new token (classic)**
-3. Select the **`repo`** scope
+3. Select the **`repo`** and notifications scope
 4. Generate and copy the token
 5. Paste it into FastGit
 
@@ -63,7 +51,7 @@ FastGit uses the GitHub Search API to find open pull requests where you're reque
 GET /search/issues?q=type:pr+state:open+review-requested:{username}
 ```
 
-Once you submit a review, GitHub removes you from the `review-requested` list and the PR automatically disappears from FastGit.
+Once you submit a review, GitHub removes you from the `review-requested` list, and the PR automatically disappears from FastGit.
 
 ## Tech stack
 

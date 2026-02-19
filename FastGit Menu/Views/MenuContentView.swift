@@ -24,7 +24,6 @@ struct MenuContentView: View {
             footer
         }
         .frame(width: 360)
-        .onAppear { viewModel.start() }
     }
 
     private var header: some View {
