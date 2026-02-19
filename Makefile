@@ -26,6 +26,8 @@ build-ci:
 		CODE_SIGNING_ALLOWED=YES \
 		DEVELOPMENT_TEAM=ZF9P9LGM63 \
 		PROVISIONING_PROFILE_SPECIFIER="" \
+		OTHER_CODE_SIGN_FLAGS="--timestamp" \
+		CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO \
 		build
 	@mkdir -p "$(BUILD_DIR)"
 	@cp -R "$(BUILD_DIR)/derived/Build/Products/Release/$(APP_NAME).app" "$(BUILD_DIR)/$(APP_NAME).app"
