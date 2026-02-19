@@ -3,7 +3,7 @@ BUILD_DIR = build
 APP_NAME = FastGit Menu
 DMG_NAME = FastGit-Menu
 
-.PHONY: build archive dmg clean
+.PHONY: build build-ci archive dmg clean
 
 build:
 	xcodebuild \
@@ -15,20 +15,21 @@ build:
 	@cp -R "$(BUILD_DIR)/derived/Build/Products/Release/$(APP_NAME).app" "$(BUILD_DIR)/$(APP_NAME).app"
 	@echo "Built: $(BUILD_DIR)/$(APP_NAME).app"
 
-archive:
+build-ci:
 	xcodebuild \
 		-scheme "$(SCHEME)" \
 		-configuration Release \
-		-archivePath "$(BUILD_DIR)/$(APP_NAME).xcarchive" \
-		archive
-	xcodebuild \
-		-exportArchive \
-		-archivePath "$(BUILD_DIR)/$(APP_NAME).xcarchive" \
-		-exportOptionsPlist ExportOptions.plist \
-		-exportPath "$(BUILD_DIR)/export"
-	@echo "Archived: $(BUILD_DIR)/export/$(APP_NAME).app"
+		-derivedDataPath "$(BUILD_DIR)/derived" \
+		CODE_SIGN_IDENTITY="-" \
+		CODE_SIGNING_REQUIRED=NO \
+		CODE_SIGNING_ALLOWED=NO \
+		DEVELOPMENT_TEAM="" \
+		build
+	@mkdir -p "$(BUILD_DIR)"
+	@cp -R "$(BUILD_DIR)/derived/Build/Products/Release/$(APP_NAME).app" "$(BUILD_DIR)/$(APP_NAME).app"
+	@echo "Built: $(BUILD_DIR)/$(APP_NAME).app"
 
-dmg: build
+dmg:
 	@rm -f "$(BUILD_DIR)/$(DMG_NAME).dmg"
 	hdiutil create \
 		-volname "$(APP_NAME)" \
