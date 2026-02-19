@@ -23,14 +23,22 @@ GitHub's notification system mixes review requests with hundreds of other events
 
 ### Download
 
-Download the latest `.dmg` from [GitHub Releases](https://github.com/erencanarica/FastGit-Menu/releases/latest), open it, and drag **FastGit Menu** to your Applications folder.
+Download the latest `.dmg` from [GitHub Releases](https://github.com/Eronred/FastGit-Menu/releases/latest), open it, and drag **FastGit Menu** to your Applications folder.
+
+> **Note:** Since the app is not notarized, macOS may show a warning. After copying to Applications, run this command once to allow it:
+>
+> ```bash
+> xattr -cr /Applications/FastGit\ Menu.app
+> ```
+>
+> Alternatively, right-click the app and select **Open** to bypass Gatekeeper.
 
 ### Build from source
 
 Requires Xcode 16+ and macOS 14+.
 
 ```bash
-git clone https://github.com/erencanarica/FastGit-Menu.git
+git clone https://github.com/Eronred/FastGit-Menu.git
 cd FastGit-Menu
 make build
 ```

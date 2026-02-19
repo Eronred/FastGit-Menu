@@ -27,6 +27,7 @@ build-ci:
 		build
 	@mkdir -p "$(BUILD_DIR)"
 	@cp -R "$(BUILD_DIR)/derived/Build/Products/Release/$(APP_NAME).app" "$(BUILD_DIR)/$(APP_NAME).app"
+	@codesign --force --deep --sign - "$(BUILD_DIR)/$(APP_NAME).app"
 	@echo "Built: $(BUILD_DIR)/$(APP_NAME).app"
 
 dmg:
