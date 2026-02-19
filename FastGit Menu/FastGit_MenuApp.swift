@@ -8,12 +8,13 @@ struct FastGit_MenuApp: App {
         MenuBarExtra {
             MenuContentView(viewModel: viewModel)
         } label: {
-            HStack(spacing: 2) {
+            HStack(spacing: 4) {
                 Image(systemName: "arrow.triangle.pull")
                 if viewModel.prCount > 0 {
                     Text("\(viewModel.prCount)")
-                        .font(.caption2)
+                        .font(.system(size: 11, weight: .medium))
                         .monospacedDigit()
+                        .baselineOffset(-0.5)
                 }
             }
         }
